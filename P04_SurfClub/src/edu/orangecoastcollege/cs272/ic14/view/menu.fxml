@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.ParallelCamera?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.orangecoastcollege.cs272.ic14.view.MenuScene">
+   <children>
+      <ParallelCamera layoutX="311.0" layoutY="71.0" />
+      <Button layoutX="421.0" layoutY="84.0" mnemonicParsing="false" onAction="#loadSignOut" text="Log out" />
+      <GridPane layoutX="61.0" layoutY="97.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="96.66668701171875" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.33331298828125" minWidth="10.0" prefWidth="103.33331298828125" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" text="Home" />
+            <Button mnemonicParsing="false" text="merchandise" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" text="membership" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#loadEmployeeScene" text="Employee" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" text="Orders/Rentals" GridPane.rowIndex="4" />
+         </children>
+      </GridPane>
+   </children>
+</Pane>
