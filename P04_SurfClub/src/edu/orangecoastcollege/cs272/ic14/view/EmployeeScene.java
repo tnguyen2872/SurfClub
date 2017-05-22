@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 public class EmployeeScene implements Initializable{
 	private static Controller controller = Controller.getInstance();
@@ -25,6 +26,8 @@ public class EmployeeScene implements Initializable{
 	public Button deleteButton;
 	@FXML
 	public Button addButton;
+	@FXML
+	public TextField searchTF;
 	@FXML
 	public Object loadBackToMenu()
 	{
@@ -51,6 +54,15 @@ public class EmployeeScene implements Initializable{
 		ViewNavigator.loadScene("Add new Employee", ViewNavigator.ADD_EMPLOYEE_SCENE);
 		return this;
 	}
+//	@FXML
+//	public Object search()
+//	{
+//		String keyword = searchTF.getText();
+//		employeeLV.setItems(controller.filter(keyword));
+//		
+//		
+//		return this;
+//	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		positionCB.setItems(controller.getAllPositions());

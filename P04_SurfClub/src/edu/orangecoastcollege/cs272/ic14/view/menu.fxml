@@ -28,7 +28,7 @@
             <Button mnemonicParsing="false" text="merchandise" GridPane.rowIndex="1" />
             <Button mnemonicParsing="false" text="membership" GridPane.rowIndex="2" />
             <Button mnemonicParsing="false" onAction="#loadEmployeeScene" text="Employee" GridPane.rowIndex="3" />
-            <Button mnemonicParsing="false" text="Orders/Rentals" GridPane.rowIndex="4" />
+            <Button mnemonicParsing="false" onAction="#loadOrderScene" text="Orders/Rentals" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </children>

@@ -17,5 +17,11 @@ public class MenuScene {
 		ViewNavigator.loadScene("Employee", ViewNavigator.EMPLOYEE_SCENE);
 		return this;
 	}
+	@FXML
+	public Object loadOrderScene()
+	{
+		ViewNavigator.loadScene("Order History", ViewNavigator.ORDER_SCENE);
+		return this;
+	}
 
 }

@@ -13,6 +13,8 @@ public class ViewNavigator {
 	public static final String VIEW_INVENTORY_SCENE = "ViewInventoryScene.fxml";
 	public static final String EMPLOYEE_SCENE = "Employee.fxml";
 
+	public static final String ORDER_SCENE = "Order.fxml";
+	public static final String NEW_ORDER_SCENE = "NewOrder.fxml";
 	
 	public static final String ADD_EMPLOYEE_SCENE = "AddEmployee.fxml";
 	

@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import edu.orangecoastcollege.cs272.ic14.model.DBModel;
 import edu.orangecoastcollege.cs272.ic14.model.Employee;
+import edu.orangecoastcollege.cs272.ic14.model.Order;
 import edu.orangecoastcollege.cs272.ic14.model.Position;
 import edu.orangecoastcollege.cs272.ic14.model.User;
 import edu.orangecoastcollege.cs272.ic14.model.VideoGame;
@@ -37,20 +38,28 @@ public class Controller {
 	private static final String[] EMPLOYEE_FIELD_NAMES = { "id", "first_name", "last_name", "position", "date_hired", "gender", "ssn", "wage"};
 	private static final String[] EMPLOYEE_FIELD_TYPES = { "INTEGER PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
 	
+	
+	private static final String ORDER_TABLE_NAME = "order_rental";
+	private static final String[] ORDER_FIELD_NAMES = { "id", "date", "quantity", "total", "credit_card"};
+	private static final String[] ORDER_FIELD_TYPES =  { "INTEGER PRIMARY KEY", "TEXT", "INTEGER", "TEXT", "TEXT"};
+	
 	private static final String USER_GAMES_TABLE_NAME = "user_games";
 	private static final String[] USER_GAMES_FIELD_NAMES = { "user_id", "game_id"};
 	private static final String[] USER_GAMES_FIELD_TYPES = { "INTEGER", "INTEGER"};
 
 	private User mCurrentUser;
+	
 	private DBModel mVideoGameDB;
 	private DBModel mUserDB;
 	private DBModel mEmployeeDB;
 	private DBModel mUserGamesDB;
+	private DBModel mOrderDB;
 	
 	private ObservableList<Employee> mAllEmployeesList;
 	private ObservableList<User> mAllUsersList;
 	private ObservableList<VideoGame> mAllGamesList;
-
+	private ObservableList<Order> mOrdersList;
+	
 	private Controller() {
 	}
 
@@ -59,9 +68,10 @@ public class Controller {
 			theOne = new Controller();
 			theOne.mAllUsersList = FXCollections.observableArrayList();
 			theOne.mAllEmployeesList = FXCollections.observableArrayList();
-
+			theOne.mOrdersList = FXCollections.observableArrayList();
 			try {
 				theOne.mUserDB = new DBModel(DB_NAME, USER_TABLE_NAME, USER_FIELD_NAMES, USER_FIELD_TYPES);
+				System.out.println("create user db");
 
 				ArrayList<ArrayList<String>> resultsList = theOne.mUserDB.getAllRecords();
 				for (ArrayList<String> values : resultsList)
@@ -75,6 +85,7 @@ public class Controller {
 				}
 				
 				theOne.mEmployeeDB = new DBModel(DB_NAME, EMPLOYEE_TABLE_NAME, EMPLOYEE_FIELD_NAMES, EMPLOYEE_FIELD_TYPES);
+				System.out.println("create db employee");
 				ArrayList<ArrayList<String>> employeeRS = theOne.mEmployeeDB.getAllRecords();
 				
 				for (ArrayList<String> values : employeeRS)
@@ -88,6 +99,22 @@ public class Controller {
 					String ssn = values.get(6);
 					double wage = Double.parseDouble(values.get(7));
 					theOne.mAllEmployeesList.add(new Employee(id, firstName, lastName, position, dateHired, gender, ssn, wage));
+				}
+				
+				theOne.mOrderDB = new DBModel(DB_NAME, ORDER_TABLE_NAME, ORDER_FIELD_NAMES, ORDER_FIELD_TYPES);
+				System.out.println("create db order");
+				ArrayList<ArrayList<String>> orderRS = theOne.mOrderDB.getAllRecords();
+				//Date=" + mDate + ", Quantity=" + mQuantity + ", Total=" + mTotal
+//				+ ", CreditCard=" + mCreditCard + "]";
+				for (ArrayList<String> values : orderRS)
+				{
+					int id = Integer.parseInt(values.get(0));
+//					String date = values.get(1);
+//					int quantity = Integer.parseInt(values.get(2));
+//					double total = Double.parseDouble(values.get(3));
+//					String creditCard = values.get(4);
+//					theOne.mOrdersList.add( new Order(id, date, quantity, total, creditCard));
+					
 				}
 			}	catch (SQLException e) {
 					e.printStackTrace();
@@ -238,68 +265,6 @@ public class Controller {
 	public ObservableList<User> getAllUsers() {
 		return theOne.mAllUsersList;
 	}
-
-	public ObservableList<VideoGame> getAllVideoGames() {
-		return theOne.mAllGamesList;
-	}
-
-	public ObservableList<String> getDistinctPlatforms() {
-		ObservableList<String> platforms = FXCollections.observableArrayList();
-		for (VideoGame vg : theOne.mAllGamesList)
-			if (!platforms.contains(vg.getPlatform()))
-				platforms.add(vg.getPlatform());
-		FXCollections.sort(platforms);
-		return platforms;
-	}
-
-	public ObservableList<String> getDistinctPublishers() {
-		ObservableList<String> publishers = FXCollections.observableArrayList();
-		for (VideoGame vg : theOne.mAllGamesList)
-			if (!publishers.contains(vg.getPublisher()))
-				publishers.add(vg.getPublisher());
-		FXCollections.sort(publishers);
-		return publishers;
-	}
-
-
-
-//	private int initializeVideoGameDBFromFile() throws SQLException {
-//		int recordsCreated = 0;
-//
-//		// If the result set contains results, database table already has
-//		// records, no need to populate from file (so return false)
-//		if (theOne.mUserDB.getRecordCount() > 0)
-//			return 0;
-//
-//		try {
-//			// Otherwise, open the file (CSV file) and insert user data
-//			// into database
-//			Scanner fileScanner = new Scanner(new File(VIDEO_GAME_DATA_FILE));
-//			// First read is for headings:
-//			fileScanner.nextLine();
-//			// All subsequent reads are for user data
-//			while (fileScanner.hasNextLine()) {
-//				String[] data = fileScanner.nextLine().split(",");
-//				// Length of values is one less than field names because values
-//				// does not have id (DB will assign one)
-//				String[] values = new String[VIDEO_GAME_FIELD_NAMES.length - 1];
-//				values[0] = data[1].replaceAll("'", "''");
-//				values[1] = data[2];
-//				values[2] = data[3];
-//				values[3] = data[4];
-//				values[4] = data[5];
-//				theOne.mVideoGameDB.createRecord(Arrays.copyOfRange(VIDEO_GAME_FIELD_NAMES, 1, VIDEO_GAME_FIELD_NAMES.length), values);
-//				recordsCreated++;
-//			}
-//
-//			// All done with the CSV file, close the connection
-//			fileScanner.close();
-//		} catch (FileNotFoundException e) {
-//			return 0;
-//		}
-//		return recordsCreated;
-//	}
-	
 	public ObservableList<String> getAllPositions()
 	{
 		
@@ -326,16 +291,7 @@ public class Controller {
 		String[] values = {firstName, lastName, position, dateHired, gender, ssn, String.valueOf(wage)};
 		
 		try {
-//			for(String v :values)
-//				System.out.println(v);
-			
-//			System.out.println("add into list");
-//			ResultSet rs = theOne.mEmployeeDB.getAllRecords();
-//			
-//			System.out.println("read result set");
-//			if (theOne.mEmployeeDB.getRecordCount() == 0) System.out.println("database has no records");
-//			
-//			System.out.println("after");
+
 			String[] a = {"first_name", "last_name", "position", "date_hired", "gender", "ssn", "wage"};
 			int id = theOne.mEmployeeDB.createRecord(a, values);
 			mAllEmployeesList.add(new Employee(id, firstName, lastName, position, dateHired, gender, ssn, wage));
@@ -367,5 +323,12 @@ public class Controller {
 		
 		
 	}
+
+	public ObservableList getAllOrders() {
+		
+		return mOrdersList;
+	}
+
+	
 
 }
