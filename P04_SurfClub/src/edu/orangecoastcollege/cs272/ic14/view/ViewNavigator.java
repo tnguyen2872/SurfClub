@@ -13,6 +13,13 @@ public class ViewNavigator {
 	public static final String VIEW_INVENTORY_SCENE = "ViewInventoryScene.fxml";
 	public static final String EMPLOYEE_SCENE = "Employee.fxml";
 
+	public static final String SURFBOARD_RECORD_SCENE = "SurfboardRecordScene.fxml"; //
+	public static final String ADD_BOARD_SCENE = "AddBoardScene.fxml"; //
+	public static final String CREATE_BOARD_SUCCESSFULLY_SCENE = "CreateBoardSuccessfully.fxml"; //
+	public static final String ADD_SUPPLIER_SCENE = "AddSupplierScene.fxml"; //
+	public static final String SUPPLIER_RECORD_SCENE = "SupplierRecordScene.fxml"; //
+	public static final String CREATE_SUPPLIER_SUCCESSFULLY_SCENE = "CreateSupplierSuccessfully.fxml";
+	
 	
 	public static final String ADD_EMPLOYEE_SCENE = "AddEmployee.fxml";
 	

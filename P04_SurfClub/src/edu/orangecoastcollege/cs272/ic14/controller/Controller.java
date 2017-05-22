@@ -11,6 +11,8 @@ import java.util.Scanner;
 import edu.orangecoastcollege.cs272.ic14.model.DBModel;
 import edu.orangecoastcollege.cs272.ic14.model.Employee;
 import edu.orangecoastcollege.cs272.ic14.model.Position;
+import edu.orangecoastcollege.cs272.ic14.model.Supplier;
+import edu.orangecoastcollege.cs272.ic14.model.Surfboard;
 import edu.orangecoastcollege.cs272.ic14.model.User;
 import edu.orangecoastcollege.cs272.ic14.model.VideoGame;
 import javafx.collections.FXCollections;
@@ -40,16 +42,33 @@ public class Controller {
 	private static final String USER_GAMES_TABLE_NAME = "user_games";
 	private static final String[] USER_GAMES_FIELD_NAMES = { "user_id", "game_id"};
 	private static final String[] USER_GAMES_FIELD_TYPES = { "INTEGER", "INTEGER"};
+	
+	//Added by Aaron
+	private static final String SURFBOARD_TABLE_NAME = "surfboard";
+	private static final String[] SURFBOARD_FIELD_NAMES = { "id", "brand", "length", "width", "thickness", "fins set up"};
+	private static final String[] SURFBOARD_FIELD_TYPES = { "INTEGER PRIMARY KEY", "TEXT", "REAL", "REAL", "REAL", "TEXT"};
+	
+	private static final String SUPPLIER_TABLE_NAME = "supplier";
+	private static final String[] SUPPLIER_FIELD_NAMES = { "id", "name", "address", "city", "state", "product category"};
+	private static final String[] SUPPLIER_FIELD_TYPES = { "INTEGER PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
+	//
 
 	private User mCurrentUser;
+	
 	private DBModel mVideoGameDB;
 	private DBModel mUserDB;
 	private DBModel mEmployeeDB;
 	private DBModel mUserGamesDB;
+	// Added by Aaron
+	private DBModel mSurfboardDB;
+	private DBModel mSupplierDB;
+	//
 	
 	private ObservableList<Employee> mAllEmployeesList;
 	private ObservableList<User> mAllUsersList;
 	private ObservableList<VideoGame> mAllGamesList;
+	private ObservableList<Surfboard> mAllSurfboardsList;
+	private ObservableList<Supplier> mAllSuppliersList;
 
 	private Controller() {
 	}
@@ -89,11 +108,40 @@ public class Controller {
 					double wage = Double.parseDouble(values.get(7));
 					theOne.mAllEmployeesList.add(new Employee(id, firstName, lastName, position, dateHired, gender, ssn, wage));
 				}
+				
+				
+				theOne.mSurfboardDB = new DBModel(DB_NAME, SURFBOARD_TABLE_NAME, SURFBOARD_FIELD_NAMES, SURFBOARD_FIELD_TYPES);
+				ArrayList<ArrayList<String>> surfboardsRS = theOne.mSurfboardDB.getAllRecords();
+				for (ArrayList<String> values : surfboardsRS)
+				{
+					int id = Integer.parseInt(values.get(0));
+					String brand = values.get(1);
+					Double length = Double.parseDouble(values.get(2));
+					Double width = Double.parseDouble(values.get(3));
+					Double thickness = Double.parseDouble(values.get(4));
+					String finSetup = values.get(5);
+					
+					
+					theOne.mAllSurfboardsList.add(new Surfboard(id, brand, length, width, thickness, finSetup));
+				}
+				
+				theOne.mSupplierDB = new DBModel(DB_NAME, SUPPLIER_TABLE_NAME, SUPPLIER_FIELD_NAMES, SUPPLIER_FIELD_TYPES);
+				
+				ArrayList<ArrayList<String>> supplierRS = theOne.mSupplierDB.getAllRecords();
+				for (ArrayList<String> values : supplierRS)
+				{
+					int id = Integer.parseInt(values.get(0));
+					String name = values.get(1);
+					String address = values.get(2);
+					String city = values.get(3);
+					String state = values.get(4);
+					String productCategory = values.get(5);
+					
+					theOne.mAllSuppliersList.add(new Supplier(id, name, address, city, state, productCategory));
+				}
 			}	catch (SQLException e) {
 					e.printStackTrace();
 				}
-				
-
 			} 
 		
 		return theOne;
@@ -243,6 +291,14 @@ public class Controller {
 		return theOne.mAllGamesList;
 	}
 
+	public ObservableList<Supplier> getAllSuppliers()
+	{
+		return theOne.mAllSuppliersList;
+	}
+	public ObservableList<Surfboard> getAllSurfboards() 
+	{
+		return theOne.mAllSurfboardsList;
+	}
 	public ObservableList<String> getDistinctPlatforms() {
 		ObservableList<String> platforms = FXCollections.observableArrayList();
 		for (VideoGame vg : theOne.mAllGamesList)
@@ -310,7 +366,6 @@ public class Controller {
 		FXCollections.sort(mAllPositions);
 		return mAllPositions;
 		
-		
 	}
 	public ObservableList<String> getGender()
 	{
@@ -349,7 +404,48 @@ public class Controller {
 		}
 		return true;
 	}
-
+	
+	public Boolean createNewSurfboard(String brand, double length, double width, double thickness, String finSetup) 
+	{
+		try
+		{
+			String[] values = {brand, String.valueOf(length), String.valueOf(width), String.valueOf(thickness), finSetup};
+			
+			String[] a = {"brand", "length", "width", "thickness", "fin setup"};
+			int id = theOne.mSurfboardDB.createRecord(a, values);
+			mAllSurfboardsList.add(new Surfboard(id, brand, length, width, thickness, finSetup));
+			System.out.println("create id");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		
+	}
+		
+		return true;
+	}
+	public Boolean createNewSupplier(String name, String address, String city, String state, String category) 
+	{
+		try
+		{
+			String[] values = {name, address, city, state, category};
+			
+			String[] a = {"name", "address", "city", "state", "product category"};
+			int id = theOne.mSupplierDB.createRecord(a, values);
+			mAllSuppliersList.add(new Supplier(id, name, address, city, state, category));
+			System.out.println("create id");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		
+	}
+		
+		return true;
+	}
+	
 	public ObservableList<Employee> getAllEmployees() {
 		
 		return theOne.mAllEmployeesList;
@@ -364,8 +460,34 @@ public class Controller {
 			
 			e.printStackTrace();
 		}
-		
+			
+	}
+
+	public void deleteSupplier(Supplier selectedItem) 
+	{
+		try {
+			mSupplierDB.deleteRecord(String.valueOf(selectedItem.getId()));
+			mAllSuppliersList.remove(selectedItem);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
+
+	public void deleteSurfboard(Surfboard selectedItem)
+	{
+		try {
+			mSurfboardDB.deleteRecord(String.valueOf(selectedItem.getId()));
+			mAllSurfboardsList.remove(selectedItem);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+
+
 
 }
