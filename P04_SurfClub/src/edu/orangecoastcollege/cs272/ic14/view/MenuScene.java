@@ -17,5 +17,23 @@ public class MenuScene {
 		ViewNavigator.loadScene("Employee", ViewNavigator.EMPLOYEE_SCENE);
 		return this;
 	}
+	@FXML
+	public Object loadOrderScene()
+	{
+		ViewNavigator.loadScene("Order History", ViewNavigator.ORDER_SCENE);
+		return this;
+	}
+	@FXML
+	public Object loadSurfboardScene()
+	{
+		ViewNavigator.loadScene("Surfboard Records", ViewNavigator.SURFBOARD_RECORD_SCENE);
+		return this;
+	}
+	@FXML
+	public Object loadSupplierScene()
+	{
+		ViewNavigator.loadScene("Supplier Records", ViewNavigator.SUPPLIER_RECORD_SCENE);
+		return this;
+	}
 
 }
