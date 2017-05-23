@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import edu.orangecoastcollege.cs272.ic14.model.DBModel;
 import edu.orangecoastcollege.cs272.ic14.model.Employee;
+import edu.orangecoastcollege.cs272.ic14.model.Order;
 import edu.orangecoastcollege.cs272.ic14.model.Position;
 import edu.orangecoastcollege.cs272.ic14.model.Supplier;
 import edu.orangecoastcollege.cs272.ic14.model.Surfboard;
@@ -39,17 +40,22 @@ public class Controller {
 	private static final String[] EMPLOYEE_FIELD_NAMES = { "id", "first_name", "last_name", "position", "date_hired", "gender", "ssn", "wage"};
 	private static final String[] EMPLOYEE_FIELD_TYPES = { "INTEGER PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
 	
+	
+	private static final String ORDER_TABLE_NAME = "order_rental";
+	private static final String[] ORDER_FIELD_NAMES = { "id", "date", "quantity", "total", "credit_card"};
+	private static final String[] ORDER_FIELD_TYPES =  { "INTEGER PRIMARY KEY", "TEXT", "INTEGER", "TEXT", "TEXT"};
+	
 	private static final String USER_GAMES_TABLE_NAME = "user_games";
 	private static final String[] USER_GAMES_FIELD_NAMES = { "user_id", "game_id"};
 	private static final String[] USER_GAMES_FIELD_TYPES = { "INTEGER", "INTEGER"};
 	
 	//Added by Aaron
 	private static final String SURFBOARD_TABLE_NAME = "surfboard";
-	private static final String[] SURFBOARD_FIELD_NAMES = { "id", "brand", "length", "width", "thickness", "fins set up"};
+	private static final String[] SURFBOARD_FIELD_NAMES = { "id", "brand", "length", "width", "thickness", "fins_set_up"};
 	private static final String[] SURFBOARD_FIELD_TYPES = { "INTEGER PRIMARY KEY", "TEXT", "REAL", "REAL", "REAL", "TEXT"};
 	
 	private static final String SUPPLIER_TABLE_NAME = "supplier";
-	private static final String[] SUPPLIER_FIELD_NAMES = { "id", "name", "address", "city", "state", "product category"};
+	private static final String[] SUPPLIER_FIELD_NAMES = { "id", "name", "address", "city", "state", "product_category"};
 	private static final String[] SUPPLIER_FIELD_TYPES = { "INTEGER PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
 	//
 
@@ -59,17 +65,26 @@ public class Controller {
 	private DBModel mUserDB;
 	private DBModel mEmployeeDB;
 	private DBModel mUserGamesDB;
+//<<<<<<< HEAD
 	// Added by Aaron
 	private DBModel mSurfboardDB;
 	private DBModel mSupplierDB;
 	//
+//=======
+	private DBModel mOrderDB;
+//>>>>>>> branch 'master' of https://github.com/tnguyen2872/SurfClub.git
 	
 	private ObservableList<Employee> mAllEmployeesList;
 	private ObservableList<User> mAllUsersList;
 	private ObservableList<VideoGame> mAllGamesList;
+//<<<<<<< HEAD
 	private ObservableList<Surfboard> mAllSurfboardsList;
 	private ObservableList<Supplier> mAllSuppliersList;
 
+//=======
+	private ObservableList<Order> mOrdersList;
+	
+//>>>>>>> branch 'master' of https://github.com/tnguyen2872/SurfClub.git
 	private Controller() {
 	}
 
@@ -78,9 +93,10 @@ public class Controller {
 			theOne = new Controller();
 			theOne.mAllUsersList = FXCollections.observableArrayList();
 			theOne.mAllEmployeesList = FXCollections.observableArrayList();
-
+			theOne.mOrdersList = FXCollections.observableArrayList();
 			try {
 				theOne.mUserDB = new DBModel(DB_NAME, USER_TABLE_NAME, USER_FIELD_NAMES, USER_FIELD_TYPES);
+				System.out.println("create user db");
 
 				ArrayList<ArrayList<String>> resultsList = theOne.mUserDB.getAllRecords();
 				for (ArrayList<String> values : resultsList)
@@ -94,6 +110,7 @@ public class Controller {
 				}
 				
 				theOne.mEmployeeDB = new DBModel(DB_NAME, EMPLOYEE_TABLE_NAME, EMPLOYEE_FIELD_NAMES, EMPLOYEE_FIELD_TYPES);
+				System.out.println("create db employee");
 				ArrayList<ArrayList<String>> employeeRS = theOne.mEmployeeDB.getAllRecords();
 				
 				for (ArrayList<String> values : employeeRS)
@@ -107,6 +124,22 @@ public class Controller {
 					String ssn = values.get(6);
 					double wage = Double.parseDouble(values.get(7));
 					theOne.mAllEmployeesList.add(new Employee(id, firstName, lastName, position, dateHired, gender, ssn, wage));
+				}
+				
+				theOne.mOrderDB = new DBModel(DB_NAME, ORDER_TABLE_NAME, ORDER_FIELD_NAMES, ORDER_FIELD_TYPES);
+				System.out.println("create db order");
+				ArrayList<ArrayList<String>> orderRS = theOne.mOrderDB.getAllRecords();
+				//Date=" + mDate + ", Quantity=" + mQuantity + ", Total=" + mTotal
+//				+ ", CreditCard=" + mCreditCard + "]";
+				for (ArrayList<String> values : orderRS)
+				{
+					int id = Integer.parseInt(values.get(0));
+//					String date = values.get(1);
+//					int quantity = Integer.parseInt(values.get(2));
+//					double total = Double.parseDouble(values.get(3));
+//					String creditCard = values.get(4);
+//					theOne.mOrdersList.add( new Order(id, date, quantity, total, creditCard));
+					
 				}
 				
 				
@@ -286,6 +319,7 @@ public class Controller {
 	public ObservableList<User> getAllUsers() {
 		return theOne.mAllUsersList;
 	}
+//<<<<<<< HEAD
 
 	public ObservableList<VideoGame> getAllVideoGames() {
 		return theOne.mAllGamesList;
@@ -356,6 +390,8 @@ public class Controller {
 //		return recordsCreated;
 //	}
 	
+//=======
+//>>>>>>> branch 'master' of https://github.com/tnguyen2872/SurfClub.git
 	public ObservableList<String> getAllPositions()
 	{
 		
@@ -381,16 +417,7 @@ public class Controller {
 		String[] values = {firstName, lastName, position, dateHired, gender, ssn, String.valueOf(wage)};
 		
 		try {
-//			for(String v :values)
-//				System.out.println(v);
-			
-//			System.out.println("add into list");
-//			ResultSet rs = theOne.mEmployeeDB.getAllRecords();
-//			
-//			System.out.println("read result set");
-//			if (theOne.mEmployeeDB.getRecordCount() == 0) System.out.println("database has no records");
-//			
-//			System.out.println("after");
+
 			String[] a = {"first_name", "last_name", "position", "date_hired", "gender", "ssn", "wage"};
 			int id = theOne.mEmployeeDB.createRecord(a, values);
 			mAllEmployeesList.add(new Employee(id, firstName, lastName, position, dateHired, gender, ssn, wage));
@@ -475,6 +502,7 @@ public class Controller {
 		
 	}
 
+//<<<<<<< HEAD
 	public void deleteSurfboard(Surfboard selectedItem)
 	{
 		try {
@@ -489,5 +517,13 @@ public class Controller {
 	
 
 
+// =======
+	public ObservableList getAllOrders() {
+		
+		return mOrdersList;
+	}
+
+	
+// >>>>>>> branch 'master' of https://github.com/tnguyen2872/SurfClub.git
 
 }

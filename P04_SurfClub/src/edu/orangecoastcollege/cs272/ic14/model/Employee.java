@@ -158,9 +158,8 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee [mId=" + mId + ", mFirstName=" + mFirstName + ", mLastName=" + mLastName + ", mPosition="
-				+ mPosition + ", mDateHired=" + mDateHired + ", mGender=" + mGender + ", mSSN=" + mSSN + ", mWage="
-				+ mWage + "]";
+		return "Employee Id=" + mId + " , " + mFirstName + ", " + mLastName + ", Position="
+				+ mPosition ;
 	}
 	
 	
